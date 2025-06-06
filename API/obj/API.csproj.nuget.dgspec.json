@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\2025\\Chat_Net_Angular\\Chat\\api\\API.csproj": {}
+    "E:\\2025\\Chat_Net_Angular\\Chat\\API\\API.csproj": {}
   },
   "projects": {
-    "E:\\2025\\Chat_Net_Angular\\Chat\\api\\API.csproj": {
+    "E:\\2025\\Chat_Net_Angular\\Chat\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\Chat_Net_Angular\\Chat\\api\\API.csproj",
+        "projectUniqueName": "E:\\2025\\Chat_Net_Angular\\Chat\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "E:\\2025\\Chat_Net_Angular\\Chat\\api\\API.csproj",
+        "projectPath": "E:\\2025\\Chat_Net_Angular\\Chat\\API\\API.csproj",
         "packagesPath": "C:\\Users\\ngoct\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\Chat_Net_Angular\\Chat\\api\\obj\\",
+        "outputPath": "E:\\2025\\Chat_Net_Angular\\Chat\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ngoct\\AppData\\Roaming\\NuGet\\NuGet.Config",
