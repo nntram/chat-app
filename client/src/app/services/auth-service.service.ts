@@ -8,8 +8,9 @@ import { AppComponent } from '../app.component';
   providedIn: 'root'
 })
 export class AuthServiceService {
-  private baseUrl = 'http://localhost:500/api/account';
-  httpClient = inject(HttpClient);
+  private baseUrl = 'http://localhost:5000/api/account';
+  private httpClient = inject(HttpClient);
+  private token = 'token';
 
   register(data: FormData) : Observable<ApiResponse<string>> {
     return this.httpClient
@@ -17,6 +18,19 @@ export class AuthServiceService {
     .pipe(
       tap(response => {
         localStorage.setItem('token', response.data);
+      })
+    );
+  }
+
+  login(email: string, password: string) : Observable<ApiResponse<string>> {
+    return this.httpClient
+    .post<ApiResponse<string>>(`${this.baseUrl}/login`, {email, password})
+    .pipe(
+      tap(response => {
+        if (response.isSuccess)
+        {
+          localStorage.setItem('token', response.data);
+        }
       })
     );
   }
