@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { AuthServiceService } from '../services/auth-service.service';
+import { AuthService } from '../services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,7 @@ export class RegisterComponent {
   profilePicture: string = 'https://static.vecteezy.com/system/resources/previews/024/966/233/non_2x/businesswoman-portrait-beautiful-woman-in-business-suit-employee-of-business-institution-in-uniform-lady-office-worker-woman-business-avatar-profile-picture-illustration-vector.jpg';
   profileImage: File | null = null;
 
-  authService = inject(AuthServiceService);
+  authService = inject(AuthService);
   hide = signal(true);
   snackBar = inject(MatSnackBar);
   router = inject(Router);
@@ -65,7 +65,7 @@ export class RegisterComponent {
       error: (error: HttpErrorResponse) => {
         let err = error.error as ApiResponse<string>;
         this.snackBar.open(err.error, 'Close');
-      }, 
+      },
       complete: () => {
         this.router.navigate(['/']);
       }
