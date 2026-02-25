@@ -19,8 +19,8 @@ public class FileUpload
         var filePath = Path.Combine(uploadFolder, fileName);
 
         await using var stream = new FileStream(filePath, FileMode.Create);
-        await stream.CopyToAsync(stream);
+        await file.CopyToAsync(stream);
         return fileName;
-    }   
+    }
 
 }
