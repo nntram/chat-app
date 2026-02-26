@@ -29,7 +29,7 @@
     </div>
     <div class="py-1 overflow-y-auto scroll-smooth">
         @for (user of chatService.onlineUsers(); track user) {
-        <div
+        <div (click)="openChatWindow(user)"
             class="flex item-center border-b bg-white  hover:bg-slate-200 cursor-pointer hover:rounded-md border-gray-100 gap-2 px-2 py-2">
             <img [src]="user.profileImage || 'professional-woman-avatar.svg'" class="w-10 h-10 rounded-full"
                 alt="User avatar">

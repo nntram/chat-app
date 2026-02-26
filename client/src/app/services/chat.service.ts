@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { AuthService } from './auth.service';
 import { User } from '../models/user';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
+import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr'
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ export class ChatService {
   private hubUrl = 'http://localhost:5000/hubs/chat';
 
   onlineUsers = signal<User[]>([]);
+  currentOpenedChat = signal<User | null>(null)
 
   private hubConnection?: HubConnection;
 
@@ -32,5 +33,11 @@ export class ChatService {
       this.onlineUsers.update(() =>
         user.filter(user => user.userName !== this.authService.currentLoggedUser!.userName))
     })
+  }
+
+  disConnectConnection() {
+    if (this.hubConnection?.state === HubConnectionState.Connected) {
+      this.hubConnection.stop().catch(err => console.log(err));
+    }
   }
 }

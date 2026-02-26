@@ -34,7 +34,7 @@ public class ChatHub(UserManager<AppUser> userManager, AppDbContext context) : H
             {
                 UserName = userName,
                 ConnectionId = connectionId,
-                ProfilePicture = currentUser!.ProfileImage,
+                ProfileImage = currentUser!.ProfileImage,
                 FullName = currentUser!.FullName,
             };
 
@@ -138,7 +138,7 @@ public class ChatHub(UserManager<AppUser> userManager, AppDbContext context) : H
             Id = u.Id,
             UserName = u.UserName,
             FullName = u.FullName,
-            ProfilePicture = u.ProfileImage,
+            ProfileImage = u.ProfileImage,
             IsOnline = onlineUserSet.Contains(u.UserName!),
             UnreadCount = context.Messages.Count(x => x.ReceiverId == username && x.SenderId == u.Id && !x.IsRead),
         }).OrderByDescending(u => u.IsOnline).ToListAsync();
