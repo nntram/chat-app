@@ -44,7 +44,7 @@ public class ChatHub(UserManager<AppUser> userManager, AppDbContext context) : H
 
         if (!string.IsNullOrEmpty(receiverId))
         {
-            await LoadMessage(receiverId);
+            await LoadMessages(receiverId);
         }
         await Clients.All.SendAsync("OnlineUsers", await GetAllUsers());
     }
@@ -92,7 +92,7 @@ public class ChatHub(UserManager<AppUser> userManager, AppDbContext context) : H
         await Clients.All.SendAsync("OnllineUsers", await GetAllUsers());
     }
 
-    public async Task LoadMessage(string receiverId, int pageNumber = 1)
+    public async Task LoadMessages(string receiverId, int pageNumber = 1)
     {
         int pageSize = 10;
         var username = Context.User!.Identity!.Name;
@@ -103,8 +103,8 @@ public class ChatHub(UserManager<AppUser> userManager, AppDbContext context) : H
             return;
         }
 
-        List<MessageResponseDto> messages = await context.Messages.Where(x => x.ReceiverId == currentUser!.Id
-        && x.SenderId == receiverId || x.SenderId == currentUser!.Id && x.ReceiverId == receiverId)
+        List<MessageResponseDto> messages = await context.Messages.Where(x => (x.ReceiverId == currentUser!.Id
+        && x.SenderId == receiverId) || (x.SenderId == currentUser!.Id && x.ReceiverId == receiverId))
         .OrderByDescending(x => x.CreatedDate).Skip((pageNumber - 1) * pageSize).Take(pageSize).OrderBy(x => x.CreatedDate)
         .Select(x => new MessageResponseDto
         {
@@ -127,6 +127,7 @@ public class ChatHub(UserManager<AppUser> userManager, AppDbContext context) : H
 
         await Clients.User(currentUser.Id).SendAsync("ReceiveMessageList", messages);
     }
+
     private async Task<IEnumerable<OnlineUserDto>> GetAllUsers()
     {
         var username = Context.User!.GetUserName();

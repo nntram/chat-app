@@ -32,6 +32,18 @@ export class ChatService {
         console.log('Connetion or login error', error);
       })
 
+    this.hubConnection!.on('Notify', (user: User) => {
+      Notification.requestPermission().then((result) => {
+        if (result == 'granted') {
+          new Notification('Active now', {
+            body: user.fullName + ' is online now',
+            icon: user.profileImage,
+          })
+        }
+      }
+      )
+    })
+
     this.hubConnection!.on('OnlineUsers', (user: User[]) => {
       console.log(user);
       this.onlineUsers.update(() =>
@@ -42,12 +54,42 @@ export class ChatService {
       this.chatMessages.update(messages => [...message, ...messages]);
       this.isLoading.update(() => false);
     })
+
+    this.hubConnection!.on('ReceiveNewMessage', (message: Message) => {
+      document.title = '(1) New Message';
+      this.chatMessages.update((messages) => [...messages, message]);
+    })
   }
 
   disConnectConnection() {
     if (this.hubConnection?.state === HubConnectionState.Connected) {
       this.hubConnection.stop().catch(err => console.log(err));
     }
+  }
+
+  sendMessage(message: string) {
+    this.chatMessages.update((messages) => [
+      ...messages,
+      {
+        content: message,
+        senderId: this.authService.currentLoggedUser!.id,
+        receiverId: this.currentOpenedChat()?.id!,
+        createdDate: new Date().toString(),
+        isRead: false,
+        id: 0
+      },
+    ]);
+
+    this.hubConnection?.invoke('SendMessage', {
+      receiverId: this.currentOpenedChat()?.id,
+      content: message,
+    })
+      .then((id) => {
+        console.log('message send to', id)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   status(userName: string): string {
